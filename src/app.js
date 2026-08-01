@@ -5,6 +5,9 @@ const app = express();
 const recipeRoutes = require("./routes/recipeRoutes");
 
 app.use(express.json())
+app.get("/", (req, res) => {
+    res.send("Recipe API is running ");
+});
 app.use("/recipes" , recipeRoutes);
 
 
