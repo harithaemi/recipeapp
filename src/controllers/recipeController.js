@@ -23,12 +23,30 @@ const updateRecipe = async (req,res)=>{
         const recipeId = req.params.id;
         const data =req.body;
          try{ 
-            await Recipe.findByIdAndUpdate({_id:recipeId},data)
+            await Recipe.findByIdAndUpdate({_id:recipeId},data,{
+        new: true,
+        runValidators: true
+    })
 res.send("recipes updated successfully");
     }catch(err){
         res.status(400).send("something went wrong")
     }
 }
+const getRecipeById = async (req, res) => {
+  try {
+    const recipeId = req.params.id;
+
+    const recipe = await Recipe.findById(recipeId);
+
+    if (!recipe) {
+      return res.status(404).send("Recipe not found");
+    }
+
+    res.status(200).json(recipe);
+  } catch (err) {
+    res.status(400).send("Something went wrong");
+  }
+};
  
 const deleteRecipe = async(req,res)=>{
     const recipeId = req.params.id;
@@ -40,4 +58,4 @@ const deleteRecipe = async(req,res)=>{
     }
 }
 
-module.exports ={ createRecipes ,getAllRecipes ,updateRecipe,deleteRecipe}
+module.exports ={ createRecipes ,getAllRecipes ,updateRecipe,deleteRecipe , getRecipeById}
